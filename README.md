@@ -7,10 +7,10 @@ Componeer operates unobtrusively, focusing on instantiating classes (optionally)
 selectors. It avoids enforcing a specific API or necessitating class inheritance, thus minimizing the learning curve for
 developers.
 
-It encourages you to coherently encapsulate and stage those small yet crucial pieces of code—such as event handlers and
-DOM manipulations that are often written directly into scripts without structure for growing into more complex
+It encourages you to coherently encapsulate and stage those small yet crucial pieces of code — such as event handlers and
+DOM manipulations that are often written directly into scripts without structure — for growing into more complex
 components. As the components do not adhere to a proprietary API, they remain easy to port to other frameworks, ensuring
-versatility and adaptability in your development journey.
+versatility and adaptability.
 
 ## Getting Started
 
