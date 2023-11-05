@@ -48,24 +48,12 @@ A component configuration is an object that tells Componeer how to instantiate a
 
 ```javascript
 {
-    class
-
-:
-    MyComponentClass,        // The class that should be instantiated (required).
-        selector
-:
-    '.my-component',      // CSS Selector to find the DOM element (optional).
-        name
-:
-    'MyComponent',            // Optional name for referencing the component instance.
-        options
-:
-    {
-        // Variables or options to pass to the component's constructor.
+    class: MyComponentClass,      // The class that should be instantiated (required).
+    selector: '.my-component',    // CSS Selector to find the DOM element (optional).
+    name: 'MyComponent',          // Optional name for referencing the component instance.
+    options: {                    // Variables or options to pass to the component's constructor.
         any: 'variables',
-            you
-    :
-        'want'
+        you: 'want'
     }
 }
 ```
