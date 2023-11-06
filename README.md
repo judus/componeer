@@ -36,7 +36,7 @@ const app = new Container([
     }
 ]);
 
-app.initAll();
+app.init();
 ```
 
 This code snippet shows how to instantiate a new Componeer container and initialize instances of ColorChanger and

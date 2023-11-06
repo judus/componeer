@@ -19,7 +19,7 @@ app.register({
 	}
 });
 
-app.init(['AlertButton', 'ColorChanger']);
+app.init();
 
 
 const colorChanger = app.proxy('ColorChanger');
