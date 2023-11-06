@@ -4,13 +4,11 @@ export default class AbstractComponent {
 		this.options = options;
 		this.eventBus = eventBus;
 
-		this.eventBus.on('instance:init', () => {
-			this.eventBus.off('instance:init');
+		this.eventBus.once('instance:init', () => {
 			this.onInit();
 		});
 
-		this.eventBus.on('instance:destroy', () => {
-			this.eventBus.off('instance:destroy');
+		this.eventBus.once('instance:destroy', () => {
 			this.onDestroy();
 		});
 
