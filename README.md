@@ -3,14 +3,14 @@
 Componeer is a utility that helps you streamline your JavaScript code organization. Emphasizing component-based
 architecture, it enables the bundling of features and behaviors into distinct, manageable component classes.
 
-Componeer operates unobtrusively, focusing on instantiating classes (optionally) linked to DOM elements identified by
-selectors. It avoids enforcing a specific API or necessitating class inheritance, thus minimizing the learning curve for
-developers.
-
-It encourages you to coherently encapsulate and stage those small yet crucial pieces of code — such as event handlers and
-DOM manipulations that are often written directly into scripts without structure — for growing into more complex
+It encourages you to coherently encapsulate and stage those small yet crucial pieces of code — such as event handlers
+and DOM manipulations that are often written directly into scripts without structure — for growing into more complex
 components. As the components do not adhere to a proprietary API, they remain easy to port to other frameworks, ensuring
 versatility and adaptability.
+
+Componeer operates unobtrusively, focusing on instantiating classes (optionally) linked to DOM elements identified by
+selectors. It avoids enforcing a specific API or necessitating class inheritance, thus minimizing learning efforts.
+
 
 ## Getting Started
 
