@@ -1,17 +1,19 @@
 import Component from "./Component.js";
 import EventBus from "./EventBus.js";
+import ComponentProxy from "./ComponentProxy.js";
 
 /**
  * Represents the main application controller.
  * It manages components and their lifecycle.
  */
-export default class Container {
+export default class Componeer {
 	/**
 	 * Creates a new Componeer instance.
 	 *
 	 * @param {Array} components - Configuration object for the application.
+	 * @param context
 	 */
-	constructor(components, context = document.body) {
+	constructor(components, context = document) {
 
 		if(!Array.isArray(components)) {
 			throw new Error("The components parameter must be an array.");
@@ -22,9 +24,14 @@ export default class Container {
 		this.context = this.getContext(context);
 
 		components.forEach((config) => {
-			let component = new Component(config, this.eventBus, this.context);
-			this.components.set(component.name, component);
+			this.register(config);
 		});
+	}
+
+	register(config) {
+		const component = new Component(config, this.eventBus, this.context);
+		// Register the component.
+		this.components.set(component.name, component);
 	}
 
 	getContext(context) {
@@ -50,8 +57,9 @@ export default class Container {
 	 *
 	 * @param {string} componentName - Name of the component to initialize.
 	 * @param {HTMLElement} [context] - The DOM context for the component.
+	 * @returns {boolean} Indicates whether the initialization was successful.
 	 */
-	init(componentName, context) {
+	initComponent(componentName, context) {
 		if(!this.components.has(componentName)) {
 			console.warn(`Component "${componentName}" not found.`);
 			return false;
@@ -62,31 +70,43 @@ export default class Container {
 		if(Array.isArray(component.requires)) {
 			component.requires.forEach(requirement => {
 				if(this.components.has(requirement)) {
-					this.components.get(requirement).init(context);
+					this.initComponent(requirement, context);
 				} else {
 					console.warn(`Component "${requirement}" not found.`);
 				}
 			});
 		}
 
-		this.components.get(componentName).init(context);
+		component.init(context);
 		this.eventBus.emit('componentInitialized', componentName);
-
+		return true;
 	}
 
 	/**
-	 * Initialize all components.
+	 * Initialize components based on the provided argument(s).
+	 * If no argument is provided, all components are initialized.
+	 * If a string is provided, the component with that name is initialized.
+	 * If an array is provided, each element is processed as a string representing the component name.
 	 *
-	 * @param {HTMLElement} [context] - The DOM context for the components.
+	 * @param {string|array} [components] - The name(s) of the components to initialize.
 	 */
-	initAll() {
-		if(this.components.size === 0) {
-			console.warn("No components available to initialize.");
-			return;
+	init(components) {
+		// Initialize all components if no argument is provided
+		if(!components) {
+			this.components.forEach((_, componentName) => {
+				this.initComponent(componentName);
+			});
+		} else if(typeof components === 'string') {
+			// Single component initialization
+			this.initComponent(components);
+		} else if(Array.isArray(components)) {
+			// Array of components initialization
+			components.forEach(componentName => {
+				this.initComponent(componentName);
+			});
+		} else {
+			throw new Error('Invalid argument provided to init method. Expected a string or an array of strings.');
 		}
-		this.components.forEach(component => {
-			this.init(component.name, this.context);
-		});
 	}
 
 	/**
@@ -102,12 +122,16 @@ export default class Container {
 			if(typeof instanceId !== 'undefined') {
 				const instance = component.instances.get(instanceId);
 				if(instance) {
-					instance.destroy();
+					if(typeof instance.destroy === 'function') {
+						instance.destroy();
+					}
 					component.instances.delete(instanceId);
 				}
 			} else {
 				component.instances.forEach((instance, key) => {
-					instance.destroy();
+					if(typeof instance.destroy === 'function') {
+						instance.destroy();
+					}
 					component.instances.delete(key);
 				});
 			}
@@ -120,6 +144,43 @@ export default class Container {
 	destroyAll() {
 		for(const componentName of this.components.keys()) {
 			this.destroy(componentName);
+		}
+	}
+
+	recreate(componentName, instanceId) {
+		const component = this.components.get(componentName);
+		if(component) {
+			if(typeof instanceId !== 'undefined') {
+				this.recreateById(component, instanceId);
+			} else {
+				this.recreateAll(component);
+			}
+		}
+	}
+
+	recreateAll(component) {
+		const instanceIds = Array.from(component.instances.keys());
+		instanceIds.forEach((id) => {
+			const instance = component.instances.get(id);
+			if(instance) {
+				if(typeof instance.destroy === 'function') {
+					instance.destroy();
+				}
+				component.instances.delete(id);
+			}
+		});
+		component.instances.clear();
+		component.init();
+	}
+
+	recreateById(component, instanceId) {
+		const instance = component.instances.get(instanceId);
+		if(instance) {
+			if(typeof instance.destroy === 'function') {
+				instance.destroy();
+			}
+			component.instances.delete(instanceId);
+			component.createInstance(instanceId);
 		}
 	}
 
@@ -136,6 +197,17 @@ export default class Container {
 			return null;
 		}
 		return component;
+	}
+
+	/**
+	 * Retrieve a specific component proxy.
+	 *
+	 * @param {string} componentName - Name of the component to retrieve.
+	 * @returns {ComponentProxy} - The retrieved component or undefined if not found.
+	 */
+	proxy(componentName) {
+		const component = this.get(componentName);
+		return new ComponentProxy(component);
 	}
 
 	/**

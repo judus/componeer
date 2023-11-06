@@ -55,7 +55,8 @@ export default class Component {
 		if(this.applies !== false) {
 			if(!this.selector) {
 				this.make();
-			} else {
+                this.eventBus.emit('instance:init', this.options);
+            } else {
                 if(context && !(context instanceof HTMLElement)) {
                     throw new Error('Provided context is not an HTMLElement.');
                 }
@@ -63,10 +64,15 @@ export default class Component {
                 if(context) this.context = context;
                 this.context.querySelectorAll(this.selector).forEach(element => {
                     this.make(element);
+                    this.eventBus.emit('instance:init', element, this.options);
                 });
             }
-		}
+        }
 	}
+
+    createInstance(config, instanceId = null) {
+        console.warn('not implemented yet');
+    }
 
     generateUUID() {
         const random = () => (Math.random() * 0x100000000 >>> 0).toString(16).padStart(8, '0');
@@ -92,19 +98,6 @@ export default class Component {
             throw new Error('The identification configuration must be a function.');
         }
 
-		let instanceID;
-
-		if(typeof this.identification === 'function') {
-            instanceID = this.identification();
-        } else {
-            instanceID = this.generateUUID();
-        }
-
-        // Check for collision and append a suffix if necessary
-        while(this.instances.has(instanceID)) {
-            instanceID += '-' + Math.floor(Math.random() * 1000);
-        }
-
         const eventBusProxy = new EventBusProxy(this.eventBus, this);
 
         const instance = new this.class({
@@ -113,10 +106,25 @@ export default class Component {
             eventBus: eventBusProxy
         });
 
+        const instanceID = this.getInstanceId();
         this.instances.set(instanceID, instance);
         this.eventBusProxies.set(instanceID, eventBusProxy);
+    }
 
-		eventBusProxy.emit('instance:init', element, this.options);
+    getInstanceId() {
+        let instanceID;
+
+        if(typeof this.identification === 'function') {
+            instanceID = this.identification();
+        } else {
+            instanceID = this.generateUUID();
+        }
+
+        while(this.instances.has(instanceID)) {
+            instanceID += '-' + Math.floor(Math.random() * 1000);
+        }
+
+        return instanceID;
     }
 
     getInstance(id) {

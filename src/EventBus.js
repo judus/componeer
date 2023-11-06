@@ -61,4 +61,23 @@ export default class EventBus {
 			callback(...args);
 		});
 	}
+
+	/**
+	 * Registers a listener that will be invoked only once for the specified event.
+	 *
+	 * After the listener is called for the event, it will automatically be removed.
+	 * This is useful for events that are only expected to happen once in the lifetime
+	 * of an application, such as initialization events or one-time user interactions.
+	 *
+	 * @param {string} event - The name of the event to listen for.
+	 * @param {Function} listener - The callback function to invoke the first time the event is emitted.
+	 *                              The function will be invoked with any arguments passed to `emit`.
+	 */
+	once(event, listener) {
+		const onceWrapper = (...args) => {
+			listener(...args);
+			this.off(event, onceWrapper);
+		};
+		this.on(event, onceWrapper);
+	}
 }
