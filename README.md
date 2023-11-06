@@ -124,8 +124,7 @@ export default class AlertButtonEventBus {
         this.element = element;
         this.options = options;
 
-        this.eventBus.on('instance:init', () => {
-            this.eventBus.off('instance:init');
+        this.eventBus.once('instance:init', () => {
             this.init();
         });
     }
@@ -148,13 +147,11 @@ export default class AbstractComponent {
         this.options = options;
         this.eventBus = eventBus;
 
-        this.eventBus.on('instance:init', () => {
-            this.eventBus.off('instance:init');
+        this.eventBus.once('instance:init', () => {
             this.onInit();
         });
 
-        this.eventBus.on('instance:destroy', () => {
-            this.eventBus.off('instance:destroy');
+        this.eventBus.once('instance:destroy', () => {
             this.onDestroy();
         });
 
@@ -187,6 +184,5 @@ export default class AlertButtonExtension extends AbstractComponent {
 
 Each of these examples illustrates different ways to use Componeer components. The **AlertButton** component is a simple
 example of a component that listens to click events. **AdvancedComponent** demonstrates the integration of an event bus
-for
-inter-component communication, and **AbstractComponent** shows how you can create an abstract class that enforces the
+for inter-component communication, and **AbstractComponent** shows how you can create an abstract class that enforces the
 implementation of specific methods by any subclass.
