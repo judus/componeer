@@ -1,4 +1,4 @@
-import Container from '../src/Container';
+import Componeer from '../src/Componeer';
 import Component from '../src/Component';
 import EventBus from '../src/EventBus';
 
@@ -28,7 +28,7 @@ describe('Container', () => {
 		];
 
 		// Initialize the Container with the componentsConfig
-		container = new Container(componentsConfig, context);
+		container = new Componeer(componentsConfig, context);
 	});
 
 	describe('constructor', () => {
@@ -51,7 +51,7 @@ describe('Container', () => {
 			];
 
 			// Re-create the Container instance with the new config
-			container = new Container(config, context);
+			container = new Componeer(config, context);
 
 			// Now, we check that the Component constructor was called with the correct config and shared EventBus for each component config
 			componentsConfig.forEach((config, index) => {
@@ -64,7 +64,7 @@ describe('Container', () => {
 		});
 
 		it('should throw an error if components parameter is not an array', () => {
-			expect(() => new Container("not an array")).toThrow();
+			expect(() => new Componeer("not an array")).toThrow();
 		});
 	});
 
@@ -72,7 +72,7 @@ describe('Container', () => {
 		// Tests for getContext method
 	});
 
-	describe('init', () => {
+	describe('initComponent', () => {
 		it('should initialize a component by name', () => {
 
 		});
@@ -80,14 +80,14 @@ describe('Container', () => {
 		it('should warn and return false if the component does not exist', () => {
 			// Mock console.warn to ensure it was called
 			const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-			const result = container.init('NonExistentComponent');
+			const result = container.initComponent('NonExistentComponent');
 			expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining('not found'));
 			expect(result).toBe(false);
 			consoleWarnSpy.mockRestore();
 		});
 	});
 
-	describe('initAll', () => {
+	describe('init', () => {
 		it('should initialize all components', () => {
 			// Assert that init was called for each component
 		});

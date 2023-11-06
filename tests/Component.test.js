@@ -2,7 +2,6 @@ import Component from '../src/Component.js';
 import EventBus from '../src/EventBus.js';
 import EventBusProxy from "../src/EventBusProxy.js";
 
-
 /**
  * @jest-environment jsdom
  */
@@ -13,12 +12,6 @@ jest.mock('../src/EventBusProxy.js', () => {
 		return {cleanup: jest.fn()};
 	});
 });
-
-const mockEventBus = {
-	publish: jest.fn(),
-	subscribe: jest.fn(),
-	unsubscribe: jest.fn()
-};
 
 class DummyClass {
 	constructor({element, options, eventBus}) {
@@ -65,7 +58,12 @@ describe('Component', () => {
 			selector: '.selector',
 			options: {},
 		};
-		mockEventBus = {}; // This should be replaced with a mock or spy if necessary
+		mockEventBus = {
+			publish: jest.fn(),
+			subscribe: jest.fn(),
+			unsubscribe: jest.fn(),
+			emit: jest.fn()
+		};
 	});
 
 	describe('constructor', () => {
@@ -144,7 +142,6 @@ describe('Component', () => {
 			const component = new Component(invalidIdentificationConfig, mockEventBus);
 			expect(() => component.make()).toThrow();
 		});
-
 	});
 
 	describe('getInstance', () => {
