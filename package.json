@@ -1,21 +1,21 @@
 {
-  "name": "maduser-container",
+  "name": "componeer",
   "version": "1.0.1",
-  "description": "",
+  "description": "A lightweight unobtrusive component manager",
   "scripts": {
     "test": "jest --watchAll --verbose --coverage"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/judus/maduser-container.git"
+    "url": "git+https://github.com/judus/componeer.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/judus/maduser-container/issues"
+    "url": "https://github.com/judus/componeer/issues"
   },
-  "homepage": "https://github.com/judus/maduser-container#readme",
+  "homepage": "https://github.com/judus/componeer#readme",
   "devDependencies": {
     "@babel/core": "^7.23.2",
     "@babel/preset-env": "^7.23.2",
