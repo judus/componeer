@@ -30,25 +30,20 @@ export default class Componeer {
 
 	register(config) {
 		const component = new Component(config, this.eventBus, this.context);
-		// Register the component.
 		this.components.set(component.name, component);
 	}
 
 	getContext(context) {
 		if(context instanceof HTMLElement) {
-			// The context is already an HTMLElement, return it
 			return context;
 		} else if(typeof context === 'string') {
-			// Try to find the element using the context as a selector
 			const element = document.querySelector(context);
 			if(element) {
 				return element;
 			} else {
-				// If the selector doesn't match any elements, warn the user
 				console.warn(`No element found with the selector '${context}'. Defaulting to 'document'.`);
 			}
 		}
-		// If context is not provided, not a string, not an HTMLElement, or the selector found no element
 		return document;
 	}
 
@@ -91,16 +86,13 @@ export default class Componeer {
 	 * @param {string|array} [components] - The name(s) of the components to initialize.
 	 */
 	init(components) {
-		// Initialize all components if no argument is provided
 		if(!components) {
 			this.components.forEach((_, componentName) => {
 				this.initComponent(componentName);
 			});
 		} else if(typeof components === 'string') {
-			// Single component initialization
 			this.initComponent(components);
 		} else if(Array.isArray(components)) {
-			// Array of components initialization
 			components.forEach(componentName => {
 				this.initComponent(componentName);
 			});

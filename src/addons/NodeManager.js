@@ -5,8 +5,8 @@ export default class NodeManager {
 
     appendChild(parent, childFragment) {
         const children = Array.from(childFragment.childNodes);
-        parent.appendChild(childFragment); // This will empty the fragment and move its children to the parent.
-        children.forEach(child => this.nodes.add(child)); // Store the actual children.
+        parent.appendChild(childFragment);
+        children.forEach(child => this.nodes.add(child));
     }
 
     removeChild(parent, child) {
@@ -16,19 +16,17 @@ export default class NodeManager {
                 this.nodes.delete(child);
             } catch(error) {
                 console.error(error);
-                // Handle the error as needed.
             }
         }
     }
 
     clearAll(parent) {
         this.nodes.forEach(child => {
-            if(parent.contains(child)) { // Ensure that the child is indeed contained by the parent.
+            if(parent.contains(child)) {
                 try {
                     parent.removeChild(child);
                 } catch(error) {
                     console.error(error);
-                    // Handle the error as needed.
                 }
             }
             this.nodes.delete(child);

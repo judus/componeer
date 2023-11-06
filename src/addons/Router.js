@@ -26,12 +26,16 @@ export default class Router {
         const route = this.routes[path];
 
         if(route) {
-            this.app.destroyAll(); // Clear previous component
-            route(); // Initialize new component
+            this.app.destroyAll();
+            route();
         } else {
             // Handle 404 not found or redirect to a default route
             this.app.destroyAll();
-            this.routes['/404'](); // Assume there is a 404 component registered
+            if (this.routes['/404']) {
+                this.routes['/404']();
+            } else {
+                console.error('404 not found');
+            }
         }
     }
 
