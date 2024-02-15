@@ -1,5 +1,7 @@
 # Componeer: Organized JavaScript Components
 
+### work in progress...
+
 Componeer is a utility that helps you streamline your JavaScript code organization. Emphasizing component-based
 architecture, it enables the bundling of features and behaviors into distinct, manageable component classes.
 
