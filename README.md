@@ -89,9 +89,7 @@ constructor({element, options, eventBus})
 - **options**: The options object provided in the component configuration.
 - **eventBus**: An optional event bus for facilitating communication between components.
 
-## Component Examples*
-
-* This is where I started to realize that the Componeer library starts to break it's promise and enforces a specific API! I don't want that and I will remove everything that is related to the EventBus asap.
+## Component Example
 
 
 #### AlertButton Component
