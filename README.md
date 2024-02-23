@@ -22,7 +22,7 @@ import Container from "componeer/Container.js";
 import ColorChanger from "./ColorChanger.js";
 import AlertButton from "./AlertButton.js";
 
-const app = new Container([
+const app = new Componeer([
     {
         selector: '.container',
         class: ColorChanger
