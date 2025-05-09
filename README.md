@@ -1,6 +1,6 @@
 # Componeer: Organized JavaScript Components
 
-*When you don’t have a modern JS framework at hand — or simply don’t want to use one — Componeer offers a lightweight, "old-school" approach that still holds up. It’s not fancy, but it gets the job done. I've used it for years, and it continues to serve me well.*
+*When you don’t have a modern JS framework at hand — or simply don’t want to use one — Componeer offers a lightweight, old-school approach that still holds up. It’s not fancy, but it gets the job done. I've used it for years, and it continues to serve me well.*
 
 To be honest, if you already know how to cleanly organize your JavaScript code, you might not *need* something like Componeer. But once your scripts start growing, and you want a bit more structure without dragging in a full-blown framework, this utility can save you time and keep things sane.
 
@@ -10,7 +10,7 @@ Componeer helps you group behaviors and features into small, consistent componen
 
 At its core, Componeer is just a glorified, structured `forEach` loop over your component configs. No magic, no reactive system.
 
-Here’s the gist:
+Here’s a very simplified, pseudo-code version:
 
 ```javascript
 configList.forEach(config => {
@@ -32,7 +32,9 @@ configList.forEach(config => {
 });
 ```
 
-It instantiates your classes, optionally hooks them up to DOM elements, and passes in options. That’s it. The simplicity is deliberate.
+It instantiates your classes, optionally hooks them up to DOM elements, and passes in options. That’s it.&#x20;
+
+(Yes, there's a whole API lurking beneath — lifecycle hooks, getters/setters, reloading, and other arcane rituals — but if you're reaching for all of that, you might be better off switching to an actual JS framework.)
 
 ---
 
